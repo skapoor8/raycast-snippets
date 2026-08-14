@@ -1,0 +1,152 @@
+[
+  {
+    "name": "toml task (template)",
+    "text": "[tasks.\"db:migrate\"]\ndescription = \"Run database migrations\"\nalias       = \"dbm\"\ndepends     = [\"build\"]\ndir         = \"{{ config_root }}\"\nenv         = { LOG_LEVEL = \"info\" }\nusage       = '''\narg \"<env>\" help=\"Environment to migrate\" default=\"dev\"\nflag \"-n --dry-run\" help=\"Print the plan without applying\"\nflag \"-s --steps <steps>\" help=\"How many migrations to apply\" default=\"all\"\n'''\nrun = '''\nset -euo pipefail\n\nenv=\"${usage_env:-dev}\"\nsteps=\"${usage_steps:-all}\"\n\nif [ \"${usage_dry_run:-false}\" = \"true\" ]; then\n  echo \"would migrate $env ($steps)\"\n  exit 0\nfi\n\n{cursor}\necho \"migrated $env ($steps)\"\n'''",
+    "keyword": ";misetask"
+  },
+  {
+    "name": "toml task (minimal)",
+    "text": "[tasks.build]\ndescription = \"Build the project\"\nrun         = \"{cursor}\"",
+    "keyword": ";misemin"
+  },
+  {
+    "name": "toml task (multiline run)",
+    "text": "[tasks.release]\ndescription = \"Cut a release\"\ndepends     = [\"test\", \"build-prod\"]\nrun         = '''\nset -euo pipefail\n\nversion=\"$(cat version.txt)\"\necho \"releasing ${version}\"\n{cursor}\n'''",
+    "keyword": ";miserunblock"
+  },
+  {
+    "name": "usage spec reference",
+    "text": "[tasks.\"{cursor}\"]\ndescription = \"Task with fully parsed args and flags\"\nusage       = '''\narg \"<env>\" help=\"Required positional\"\narg \"[tag]\" help=\"Optional positional\" default=\"latest\"\narg \"<files>\" help=\"Repeatable positional, space-joined in $usage_files\" var=#true\nflag \"-v --verbose\" help=\"Boolean switch -> usage_verbose is true/false\"\nflag \"-o --out <path>\" help=\"Flag that takes a value -> usage_out\"\nflag \"-p --profile <profile>\" help=\"Constrained value\" default=\"debug\" {\n  choices \"debug\" \"release\"\n}\n'''\nrun = '''\necho \"env=${usage_env} tag=${usage_tag} files=${usage_files}\"\necho \"verbose=${usage_verbose:-false} out=${usage_out:-} profile=${usage_profile}\"\n'''",
+    "keyword": ";miseusage"
+  },
+  {
+    "name": "task caching (sources/outputs)",
+    "text": "[tasks.build]\ndescription = \"Build the project\"\nsources     = [\"src/**/*.rs\", \"Cargo.toml\"]\noutputs     = [\"target/debug/{cursor}\"]\nrun         = \"cargo build\"",
+    "keyword": ";misecache"
+  },
+  {
+    "name": "task depends",
+    "text": "[tasks.test]\ndescription = \"Run tests\"\ndepends     = [\"build\"]\nrun         = \"{cursor}\"",
+    "keyword": ";misedepends"
+  },
+  {
+    "name": "task confirm guard",
+    "text": "[tasks.\"db:reset\"]\ndescription = \"Drop and recreate the database\"\nconfirm     = \"This destroys all local data. Continue?\"\nrun         = \"{cursor}\"",
+    "keyword": ";miseconfirm"
+  },
+  {
+    "name": "file task (template, mise-tasks/<name>)",
+    "text": "#!/usr/bin/env bash\n#MISE description=\"Deploy a service to an environment\"\n#MISE alias=\"dp\"\n#MISE depends=[\"build\"]\n#MISE dir=\"{{ config_root }}\"\n#MISE sources=[\"src/**/*\"]\n#MISE env={LOG_LEVEL = \"info\"}\n#USAGE arg \"<env>\" help=\"Environment to deploy to\"\n#USAGE flag \"-f --force\" help=\"Skip the safety checks\"\n#USAGE flag \"-r --replicas <replicas>\" help=\"Replica count\" default=\"2\"\n\nset -euo pipefail\n\nenv=\"${usage_env?}\"\nreplicas=\"${usage_replicas:-2}\"\n\nif [ \"${usage_force:-false}\" != \"true\" ]; then\n  echo \"pre-flight checks for ${env}\"\nfi\n\n{cursor}\necho \"deployed ${env} with ${replicas} replicas\"",
+    "keyword": ";misefile"
+  },
+  {
+    "name": "file task (minimal, mise-tasks/<name>)",
+    "text": "#!/usr/bin/env bash\n#MISE description=\"{cursor}\"\n\nset -euo pipefail",
+    "keyword": ";misefilemin"
+  },
+  {
+    "name": "file task (hidden helper)",
+    "text": "#!/usr/bin/env bash\n#MISE description=\"Internal helper\"\n#MISE hide=true\n\nset -euo pipefail\n\n{cursor}",
+    "keyword": ";misehide"
+  },
+  {
+    "name": "enable mise-tasks dir",
+    "text": "[task_config]\nincludes = [\"mise-tasks\"]\n\n[settings]\nexperimental = true",
+    "keyword": ";misetaskdir"
+  },
+  {
+    "name": "config skeleton",
+    "text": "[env]\nPROJECT = \"{cursor}\"\nVERSION = \"{{ exec(command='cat version.txt 2>/dev/null | tr -d [:space:] || echo 0.1.0') }}\"\n_.path  = [\"{{ config_root }}/node_modules/.bin\"]\n\n[tools]\nnode = \"lts\"\n\n[tasks.build]\ndescription = \"Build the project\"\nrun         = \"echo build\"\n\n[task_config]\nincludes = [\"mise-tasks\"]\n\n[settings]\nexperimental = true",
+    "keyword": ";miseconf"
+  },
+  {
+    "name": "tools",
+    "text": "[tools]\nnode       = \"lts\"\npnpm       = \"latest\"\nterraform  = \"1\"\nshellcheck = \"latest\"\nshfmt      = \"latest\"\n{cursor}",
+    "keyword": ";misetools"
+  },
+  {
+    "name": "env",
+    "text": "[env]\nPROJECT = \"{cursor}\"\nVERSION = \"{{ exec(command='cat version.txt 2>/dev/null | tr -d [:space:] || echo 0.1.0') }}\"\n_.path  = [\"{{ config_root }}/node_modules/.bin\"]",
+    "keyword": ";miseenv"
+  },
+  {
+    "name": "standard task set",
+    "text": "[tasks.install]\ndescription = \"Install dependencies\"\nrun         = \"{cursor}\"\n\n[tasks.build]\ndescription = \"Build the project\"\ndepends     = [\"install\"]\nrun         = \"echo build\"\n\n[tasks.test]\ndescription = \"Run tests\"\ndepends     = [\"build\"]\nrun         = \"echo test\"\n\n[tasks.lint]\ndescription = \"Run the linter\"\nrun         = \"echo lint\"\n\n[tasks.\"lint-fix\"]\ndescription = \"Auto-fix linting issues\"\nrun         = \"echo lint-fix\"\n\n[tasks.format]\ndescription = \"Format source files\"\nrun         = \"echo format\"\n\n[tasks.\"format-check\"]\ndescription = \"Check formatting without writing\"\nrun         = \"echo format-check\"\n\n[tasks.clean]\ndescription = \"Remove build artifacts\"\nrun         = \"echo clean\"\n\n[tasks.version]\ndescription = \"Print the current version\"\nrun         = \"cat version.txt\"",
+    "keyword": ";misestd"
+  },
+  {
+    "name": "namespaced task group",
+    "text": "[tasks.\"{cursor}:plan\"]\ndescription = \"Plan the change\"\nrun         = \"echo plan\"\n\n[tasks.\"{cursor}:apply\"]\ndescription = \"Apply the change\"\ndepends     = [\"{cursor}:plan\"]\nrun         = \"echo apply\"",
+    "keyword": ";misegroup"
+  },
+  {
+    "name": "docker tasks",
+    "text": "[tasks.\"docker-build\"]\ndescription = \"Build the Docker image\"\nrun         = \"COMPOSE_BAKE=true docker compose build\"\n\n[tasks.\"docker-run\"]\ndescription = \"Run the app in Docker\"\ndepends     = [\"docker-build\"]\nrun         = \"docker compose up\"\n\n[tasks.\"docker-test\"]\ndescription = \"Run the test suite in Docker\"\ndepends     = [\"docker-build\"]\nrun         = \"docker compose run --rm app mise run test\"",
+    "keyword": ";misedocker"
+  },
+  {
+    "name": "gcp publish task",
+    "text": "[tasks.publish]\ndescription = \"Publish to GCP Artifact Registry\"\ndepends     = [\"test\", \"build-prod\"]\nrun         = '''\nset -euo pipefail\n\nIMAGE=\"${GCP_REGISTRY_REGION}-docker.pkg.dev/${GCP_REGISTRY_PROJECT_ID}/${GCP_REGISTRY_NAME}/${PROJECT}:${VERSION}\"\ndocker build -t \"$IMAGE\" .\ndocker push \"$IMAGE\"\necho \"Published: $IMAGE\"\n'''",
+    "keyword": ";misepublish"
+  },
+  {
+    "name": "monorepo filter tasks",
+    "text": "[tasks.\"build:web\"]\ndescription = \"Build the web app\"\nrun         = \"pnpm --filter @{cursor}/web run build\"\n\n[tasks.\"build:api\"]\ndescription = \"Build the API\"\nrun         = \"pnpm --filter @{cursor}/api run build\"",
+    "keyword": ";misemono"
+  },
+  {
+    "name": "run task",
+    "text": "mise run {cursor}",
+    "keyword": ";miserun"
+  },
+  {
+    "name": "run task with args and flags",
+    "text": "mise run db:migrate {cursor} --steps 3 --dry-run",
+    "keyword": ";miserunargs"
+  },
+  {
+    "name": "list tasks",
+    "text": "mise tasks ls",
+    "keyword": ";misels"
+  },
+  {
+    "name": "task info",
+    "text": "mise tasks info {cursor}",
+    "keyword": ";miseinfo"
+  },
+  {
+    "name": "task dependency tree",
+    "text": "mise tasks deps {cursor}",
+    "keyword": ";misedeps"
+  },
+  {
+    "name": "validate tasks",
+    "text": "mise tasks validate",
+    "keyword": ";misevalidate"
+  },
+  {
+    "name": "watch and rerun",
+    "text": "mise watch -t {cursor}",
+    "keyword": ";misewatch"
+  },
+  {
+    "name": "install tools",
+    "text": "mise install",
+    "keyword": ";miseinstall"
+  },
+  {
+    "name": "pin a tool",
+    "text": "mise use {cursor}@latest",
+    "keyword": ";miseuse"
+  },
+  {
+    "name": "run with a tool version",
+    "text": "mise exec {cursor}@latest -- node --version",
+    "keyword": ";miseexec"
+  },
+  {
+    "name": "trust config",
+    "text": "mise trust",
+    "keyword": ";misetrust"
+  }
+]

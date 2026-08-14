@@ -1,0 +1,177 @@
+[
+  {
+    "name": "main returning Result",
+    "text": "use std::error::Error;\n\nfn main() -> Result<(), Box<dyn Error>> {\n    {cursor}\n    Ok(())\n}",
+    "keyword": ";rsmain"
+  },
+  {
+    "name": "main (simple)",
+    "text": "fn main() {\n    {cursor}\n}",
+    "keyword": ";rsmainsimple"
+  },
+  {
+    "name": "module declaration",
+    "text": "mod {cursor};\n\npub use {cursor}::*;",
+    "keyword": ";rsmod"
+  },
+  {
+    "name": "function",
+    "text": "fn {cursor}(name: &str) -> String {\n    format!(\"hello, {name}\")\n}",
+    "keyword": ";rsfn"
+  },
+  {
+    "name": "struct with derives",
+    "text": "#[derive(Debug, Clone, PartialEq, Eq, Hash)]\npub struct {cursor} {\n    pub name: String,\n    pub count: usize,\n}",
+    "keyword": ";rsderive"
+  },
+  {
+    "name": "impl with new()",
+    "text": "impl {cursor} {\n    pub fn new(name: impl Into<String>) -> Self {\n        Self {\n            name: name.into(),\n            count: 0,\n        }\n    }\n}",
+    "keyword": ";rsnew"
+  },
+  {
+    "name": "newtype wrapper",
+    "text": "#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]\npub struct {cursor}(pub u64);\n\nimpl {cursor} {\n    pub fn get(self) -> u64 {\n        self.0\n    }\n}",
+    "keyword": ";rsnewtype"
+  },
+  {
+    "name": "enum",
+    "text": "#[derive(Debug, Clone, PartialEq, Eq)]\npub enum {cursor} {\n    Empty,\n    One(String),\n    Many { items: Vec<String>, total: usize },\n}",
+    "keyword": ";rsenum"
+  },
+  {
+    "name": "Display impl",
+    "text": "use std::fmt;\n\nimpl fmt::Display for {cursor} {\n    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {\n        write!(f, \"{}\", self.name)\n    }\n}",
+    "keyword": ";rsdisplay"
+  },
+  {
+    "name": "From impl",
+    "text": "impl From<{cursor}> for String {\n    fn from(value: {cursor}) -> Self {\n        value.name\n    }\n}",
+    "keyword": ";rsfrom"
+  },
+  {
+    "name": "trait definition",
+    "text": "pub trait {cursor} {\n    fn name(&self) -> &str;\n\n    fn describe(&self) -> String {\n        format!(\"<{}>\", self.name())\n    }\n}",
+    "keyword": ";rstrait"
+  },
+  {
+    "name": "impl trait for type",
+    "text": "impl {cursor} for {cursor} {\n    fn name(&self) -> &str {\n        &self.name\n    }\n}",
+    "keyword": ";rsimpltrait"
+  },
+  {
+    "name": "custom error (thiserror)",
+    "text": "use thiserror::Error;\n\n#[derive(Debug, Error)]\npub enum {cursor}Error {\n    #[error(\"not found: {0}\")]\n    NotFound(String),\n\n    #[error(\"invalid input: {reason}\")]\n    Invalid { reason: String },\n\n    #[error(transparent)]\n    Io(#[from] std::io::Error),\n}\n\npub type Result<T> = std::result::Result<T, {cursor}Error>;",
+    "keyword": ";rserror"
+  },
+  {
+    "name": "anyhow context",
+    "text": "use anyhow::{Context, Result};\n\nfn {cursor}(path: &std::path::Path) -> Result<String> {\n    std::fs::read_to_string(path)\n        .with_context(|| format!(\"failed to read {}\", path.display()))\n}",
+    "keyword": ";rsanyhow"
+  },
+  {
+    "name": "Result type alias",
+    "text": "pub type Result<T, E = Box<dyn std::error::Error + Send + Sync>> = std::result::Result<T, E>;",
+    "keyword": ";rsresult"
+  },
+  {
+    "name": "match Option",
+    "text": "match {cursor} {\n    Some(value) => {\n        println!(\"got {value}\");\n    }\n    None => {\n        println!(\"nothing\");\n    }\n}",
+    "keyword": ";rsmatchopt"
+  },
+  {
+    "name": "match Result",
+    "text": "match {cursor} {\n    Ok(value) => {\n        println!(\"ok: {value}\");\n    }\n    Err(e) => {\n        eprintln!(\"error: {e}\");\n    }\n}",
+    "keyword": ";rsmatchres"
+  },
+  {
+    "name": "if let",
+    "text": "if let Some({cursor}) = value {\n    \n}",
+    "keyword": ";rsiflet"
+  },
+  {
+    "name": "let else",
+    "text": "let Some({cursor}) = value else {\n    return;\n};",
+    "keyword": ";rsletelse"
+  },
+  {
+    "name": "while let",
+    "text": "while let Some({cursor}) = iter.next() {\n    \n}",
+    "keyword": ";rswhilelet"
+  },
+  {
+    "name": "for loop",
+    "text": "for {cursor} in items {\n    \n}",
+    "keyword": ";rsfor"
+  },
+  {
+    "name": "iter map filter collect",
+    "text": "let {cursor}: Vec<_> = items\n    .iter()\n    .filter(|x| x.is_active)\n    .map(|x| x.name.clone())\n    .collect();",
+    "keyword": ";rsiter"
+  },
+  {
+    "name": "iter fold",
+    "text": "let total = items.iter().fold(0, |acc, x| acc + x.count);",
+    "keyword": ";rsfold"
+  },
+  {
+    "name": "HashMap literal",
+    "text": "use std::collections::HashMap;\n\nlet {cursor}: HashMap<&str, i32> = HashMap::from([\n    (\"one\", 1),\n    (\"two\", 2),\n    (\"three\", 3),\n]);",
+    "keyword": ";rshm"
+  },
+  {
+    "name": "HashMap entry",
+    "text": "*counts.entry({cursor}).or_insert(0) += 1;",
+    "keyword": ";rshmentry"
+  },
+  {
+    "name": "HashSet literal",
+    "text": "use std::collections::HashSet;\n\nlet {cursor}: HashSet<&str> = HashSet::from([\"a\", \"b\", \"c\"]);",
+    "keyword": ";rshs"
+  },
+  {
+    "name": "Arc<Mutex<T>>",
+    "text": "use std::sync::{Arc, Mutex};\n\nlet {cursor} = Arc::new(Mutex::new(Vec::<String>::new()));\n\n{\n    let handle = Arc::clone(&{cursor});\n    std::thread::spawn(move || {\n        handle.lock().unwrap().push(\"hello\".into());\n    });\n}",
+    "keyword": ";rsarc"
+  },
+  {
+    "name": "OnceLock lazy static",
+    "text": "use std::sync::OnceLock;\n\nfn {cursor}() -> &'static Vec<String> {\n    static VALUE: OnceLock<Vec<String>> = OnceLock::new();\n    VALUE.get_or_init(|| vec![\"one\".into(), \"two\".into()])\n}",
+    "keyword": ";rsoncelock"
+  },
+  {
+    "name": "function with lifetime",
+    "text": "fn {cursor}<'a>(input: &'a str, sep: &str) -> Vec<&'a str> {\n    input.split(sep).collect()\n}",
+    "keyword": ";rslifetime"
+  },
+  {
+    "name": "generic function with where",
+    "text": "fn {cursor}<T>(items: &[T]) -> Option<&T>\nwhere\n    T: Ord,\n{\n    items.iter().max()\n}",
+    "keyword": ";rsgeneric"
+  },
+  {
+    "name": "test module",
+    "text": "#[cfg(test)]\nmod tests {\n    use super::*;\n\n    #[test]\n    fn {cursor}() {\n        assert_eq!(2 + 2, 4);\n    }\n}",
+    "keyword": ";rstest"
+  },
+  {
+    "name": "tokio main",
+    "text": "#[tokio::main]\nasync fn main() -> anyhow::Result<()> {\n    {cursor}\n    Ok(())\n}",
+    "keyword": ";rstokio"
+  },
+  {
+    "name": "tokio spawn + join",
+    "text": "let a = tokio::spawn(async {\n    {cursor}\n});\nlet b = tokio::spawn(async {\n    \n});\n\nlet (a, b) = tokio::try_join!(a, b)?;",
+    "keyword": ";rsspawn"
+  },
+  {
+    "name": "clap derive CLI",
+    "text": "use clap::Parser;\n\n#[derive(Debug, Parser)]\n#[command(version, about)]\nstruct Cli {\n    /// Input file\n    input: std::path::PathBuf,\n\n    /// Write output here\n    #[arg(short, long)]\n    out: Option<std::path::PathBuf>,\n\n    /// Print more output\n    #[arg(short, long)]\n    verbose: bool,\n}\n\nfn main() -> anyhow::Result<()> {\n    let cli = Cli::parse();\n    {cursor}\n    Ok(())\n}",
+    "keyword": ";rsclap"
+  },
+  {
+    "name": "read file to string",
+    "text": "let {cursor} = std::fs::read_to_string(path)?;",
+    "keyword": ";rsread"
+  }
+]

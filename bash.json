@@ -1,0 +1,172 @@
+[
+  {
+    "name": "strict mode header",
+    "text": "#!/usr/bin/env bash\nset -euo pipefail\n\n{cursor}",
+    "keyword": ";shstrict"
+  },
+  {
+    "name": "script dir",
+    "text": "script_dir=\"$(cd -- \"$(dirname -- \"${BASH_SOURCE[0]}\")\" && pwd)\"",
+    "keyword": ";shdir"
+  },
+  {
+    "name": "die helper",
+    "text": "die() {\n  printf 'error: %s\\n' \"$*\" >&2\n  exit 1\n}",
+    "keyword": ";shdie"
+  },
+  {
+    "name": "temp dir with cleanup trap",
+    "text": "tmp=\"$(mktemp -d)\"\ncleanup() { rm -rf \"$tmp\"; }\ntrap cleanup EXIT\n\n{cursor}",
+    "keyword": ";shtrap"
+  },
+  {
+    "name": "require a command",
+    "text": "command -v {cursor} >/dev/null 2>&1 || die \"{cursor} is required\"",
+    "keyword": ";shrequire"
+  },
+  {
+    "name": "function with locals",
+    "text": "{cursor}() {\n  local name=\"${1:?name required}\"\n  local greeting=\"${2:-hello}\"\n\n  printf '%s, %s!\\n' \"$greeting\" \"$name\"\n}",
+    "keyword": ";shfunc"
+  },
+  {
+    "name": "arg parsing (long flags)",
+    "text": "usage() {\n  cat <<'EOF'\nUsage: script [options] <input>...\n\nOptions:\n  -o, --out FILE   Write results to FILE\n  -v, --verbose    Print more output\n  -h, --help       Show this help\nEOF\n}\n\nout=\"\"\nverbose=false\nargs=()\n\nwhile [[ $# -gt 0 ]]; do\n  case \"$1\" in\n    -o | --out)\n      [[ $# -ge 2 ]] || die \"--out needs a value\"\n      out=\"$2\"\n      shift 2\n      ;;\n    -v | --verbose)\n      verbose=true\n      shift\n      ;;\n    -h | --help)\n      usage\n      exit 0\n      ;;\n    --)\n      shift\n      args+=(\"$@\")\n      break\n      ;;\n    -*)\n      usage >&2\n      die \"unknown option: $1\"\n      ;;\n    *)\n      args+=(\"$1\")\n      shift\n      ;;\n  esac\ndone\n\nset -- \"${args[@]+\"${args[@]}\"}\"\n[[ $# -gt 0 ]] || { usage >&2; die \"at least one input is required\"; }\n\n{cursor}",
+    "keyword": ";shargs"
+  },
+  {
+    "name": "arg parsing (getopts, short flags)",
+    "text": "out=\"\"\nverbose=false\n\nwhile getopts \":o:vh\" opt; do\n  case \"$opt\" in\n    o) out=\"$OPTARG\" ;;\n    v) verbose=true ;;\n    h) usage; exit 0 ;;\n    :) die \"option -$OPTARG needs a value\" ;;\n    \\?) die \"unknown option: -$OPTARG\" ;;\n  esac\ndone\nshift $((OPTIND - 1))\n\n{cursor}",
+    "keyword": ";shgetopts"
+  },
+  {
+    "name": "usage heredoc",
+    "text": "usage() {\n  cat <<'EOF'\nUsage: {cursor} [options] <arg>\n\nOptions:\n  -h, --help   Show this help\nEOF\n}",
+    "keyword": ";shusage"
+  },
+  {
+    "name": "require positional args",
+    "text": "[[ $# -ge {cursor} ]] || die \"usage: $0 <arg>\"",
+    "keyword": ";shreqargs"
+  },
+  {
+    "name": "loop over positional args",
+    "text": "for arg in \"$@\"; do\n  {cursor}\ndone",
+    "keyword": ";shloopargs"
+  },
+  {
+    "name": "for over list",
+    "text": "for item in {cursor}; do\n  printf '%s\\n' \"$item\"\ndone",
+    "keyword": ";shfor"
+  },
+  {
+    "name": "for over array",
+    "text": "for item in \"${{cursor}[@]}\"; do\n  printf '%s\\n' \"$item\"\ndone",
+    "keyword": ";shforarr"
+  },
+  {
+    "name": "for over range",
+    "text": "for i in {1..{cursor}}; do\n  printf '%s\\n' \"$i\"\ndone",
+    "keyword": ";shrange"
+  },
+  {
+    "name": "for C-style",
+    "text": "for ((i = 0; i < {cursor}; i++)); do\n  printf '%s\\n' \"$i\"\ndone",
+    "keyword": ";shforc"
+  },
+  {
+    "name": "for over files (glob)",
+    "text": "shopt -s nullglob\nfor file in {cursor}/*.txt; do\n  printf '%s\\n' \"$file\"\ndone\nshopt -u nullglob",
+    "keyword": ";shforglob"
+  },
+  {
+    "name": "while read lines from file",
+    "text": "while IFS= read -r line; do\n  printf '%s\\n' \"$line\"\ndone < \"{cursor}\"",
+    "keyword": ";shwhileread"
+  },
+  {
+    "name": "while read from command",
+    "text": "while IFS= read -r line; do\n  printf '%s\\n' \"$line\"\ndone < <({cursor})",
+    "keyword": ";shwhilecmd"
+  },
+  {
+    "name": "while read null-delimited (find)",
+    "text": "while IFS= read -r -d '' file; do\n  printf '%s\\n' \"$file\"\ndone < <(find {cursor} -type f -print0)",
+    "keyword": ";shfind0"
+  },
+  {
+    "name": "while read fields",
+    "text": "while IFS=, read -r first second rest; do\n  printf '%s -> %s\\n' \"$first\" \"$second\"\ndone < \"{cursor}\"",
+    "keyword": ";shfields"
+  },
+  {
+    "name": "until loop (retry)",
+    "text": "until {cursor}; do\n  sleep 1\ndone",
+    "keyword": ";shuntil"
+  },
+  {
+    "name": "retry with attempts",
+    "text": "attempts=5\nfor ((i = 1; i <= attempts; i++)); do\n  if {cursor}; then\n    break\n  fi\n  [[ $i -lt $attempts ]] || die \"failed after $attempts attempts\"\n  sleep $((i * 2))\ndone",
+    "keyword": ";shretry"
+  },
+  {
+    "name": "if / elif / else",
+    "text": "if [[ {cursor} ]]; then\n  :\nelif [[ -n \"$other\" ]]; then\n  :\nelse\n  :\nfi",
+    "keyword": ";shif"
+  },
+  {
+    "name": "string tests",
+    "text": "[[ -z \"${{cursor}:-}\" ]] && echo \"unset or empty\"\n[[ -n \"${var:-}\" ]] && echo \"set\"\n[[ \"$a\" == \"$b\" ]] && echo \"equal\"\n[[ \"$a\" != \"$b\" ]] && echo \"different\"\n[[ \"$name\" == pre* ]] && echo \"prefix match\"",
+    "keyword": ";shstrtest"
+  },
+  {
+    "name": "numeric tests",
+    "text": "if (( {cursor} > 10 )); then\n  echo \"greater\"\nelif (( count == 0 )); then\n  echo \"zero\"\nfi",
+    "keyword": ";shnumtest"
+  },
+  {
+    "name": "file tests",
+    "text": "[[ -e \"{cursor}\" ]] || die \"missing: $path\"\n[[ -f \"$path\" ]] && echo \"regular file\"\n[[ -d \"$path\" ]] && echo \"directory\"\n[[ -s \"$path\" ]] && echo \"not empty\"\n[[ -r \"$path\" ]] && echo \"readable\"\n[[ -x \"$path\" ]] && echo \"executable\"",
+    "keyword": ";shfiletest"
+  },
+  {
+    "name": "case statement",
+    "text": "case \"${cursor}\" in\n  start)\n    echo \"starting\"\n    ;;\n  stop | halt)\n    echo \"stopping\"\n    ;;\n  *)\n    die \"usage: $0 {start|stop}\"\n    ;;\nesac",
+    "keyword": ";shcase"
+  },
+  {
+    "name": "regex match",
+    "text": "if [[ \"{cursor}\" =~ ^([0-9]+)\\.([0-9]+)\\.([0-9]+)$ ]]; then\n  major=\"${BASH_REMATCH[1]}\"\n  minor=\"${BASH_REMATCH[2]}\"\n  patch=\"${BASH_REMATCH[3]}\"\nfi",
+    "keyword": ";shregex"
+  },
+  {
+    "name": "default and required values",
+    "text": "name=\"${1:-default}\"\n: \"${{cursor}:?must be set}\"",
+    "keyword": ";shdefault"
+  },
+  {
+    "name": "short-circuit guard",
+    "text": "{cursor} || die \"failed\"",
+    "keyword": ";shguard"
+  },
+  {
+    "name": "array",
+    "text": "items=({cursor})\nitems+=(\"another\")\n\nprintf '%s\\n' \"${items[@]}\"\necho \"count: ${#items[@]}\"\necho \"first: ${items[0]}\"",
+    "keyword": ";sharr"
+  },
+  {
+    "name": "associative array",
+    "text": "# bash 4+; on bash 3.2 (macOS /bin/bash) this silently becomes an indexed array\ndeclare -A {cursor}=([host]=localhost [port]=8080)\nconfig[user]=admin\n\nfor key in \"${!config[@]}\"; do\n  printf '%s=%s\\n' \"$key\" \"${config[$key]}\"\ndone",
+    "keyword": ";shmap"
+  },
+  {
+    "name": "string manipulation",
+    "text": "path=\"{cursor}/report.tar.gz\"\n\necho \"${path##*/}\"        # report.tar.gz  — basename\necho \"${path%/*}\"         # leading dirs   — dirname\necho \"${path%%.*}\"        # strip all extensions\necho \"${path//old/new}\"   # replace every match\necho \"${path^^}\"          # upper case (bash 4+)\necho \"${#path}\"           # length",
+    "keyword": ";shstr"
+  },
+  {
+    "name": "heredoc",
+    "text": "cat <<'EOF'\nliteral text, $no expansion\nEOF\n\ncat <<EOF\nexpanded: ${cursor}\nEOF",
+    "keyword": ";shheredoc"
+  }
+]

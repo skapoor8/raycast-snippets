@@ -1,0 +1,16 @@
+[tools]
+python = "3.12"
+
+[tasks.build]
+description = "Convert snippet .md files to Raycast .json"
+alias       = "b"
+sources     = ["*.md", "md2snippets.py"]
+outputs     = ["*.json"]
+run         = "python3 md2snippets.py"
+
+[tasks.clean]
+description = "Remove generated .json files"
+run         = "rm -f *.json"
+
+[settings]
+experimental = true

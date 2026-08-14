@@ -1,0 +1,187 @@
+[
+  {
+    "name": "import",
+    "text": "import marimo as mo",
+    "keyword": ";moimp"
+  },
+  {
+    "name": "notebook skeleton",
+    "text": "# /// script\n# requires-python = \">=3.12\"\n# dependencies = [\n#     \"marimo\",\n# ]\n# ///\n\nimport marimo\n\napp = marimo.App(width=\"medium\")\n\n\n@app.cell\ndef _():\n    import marimo as mo\n    return (mo,)\n\n\n@app.cell(hide_code=True)\ndef _(mo):\n    mo.md(r\"\"\"# {cursor}\"\"\")\n    return\n\n\n@app.cell\ndef _(mo):\n    pass\n    return\n\n\nif __name__ == \"__main__\":\n    app.run()",
+    "keyword": ";moapp"
+  },
+  {
+    "name": "python cell",
+    "text": "@app.cell\ndef _(mo):\n    {cursor}\n    return",
+    "keyword": ";mopycell"
+  },
+  {
+    "name": "markdown cell",
+    "text": "@app.cell(hide_code=True)\ndef _(mo):\n    mo.md(\n        r\"\"\"\n        {cursor}\n        \"\"\"\n    )\n    return",
+    "keyword": ";momdcell"
+  },
+  {
+    "name": "markdown block",
+    "text": "mo.md(\n    f\"\"\"\n    {cursor}\n    \"\"\"\n)",
+    "keyword": ";momd"
+  },
+  {
+    "name": "hstack",
+    "text": "mo.hstack([{cursor}], justify=\"start\")",
+    "keyword": ";mohstack"
+  },
+  {
+    "name": "vstack",
+    "text": "mo.vstack([{cursor}])",
+    "keyword": ";movstack"
+  },
+  {
+    "name": "tabs",
+    "text": "mo.tabs(\n    {\n        \"Overview\": {cursor},\n        \"Detail\": second,\n    }\n)",
+    "keyword": ";motabs"
+  },
+  {
+    "name": "accordion",
+    "text": "mo.accordion({\"Details\": {cursor}})",
+    "keyword": ";moaccordion"
+  },
+  {
+    "name": "callout",
+    "text": "mo.callout(mo.md(\"{cursor}\"), kind=\"warn\")",
+    "keyword": ";mocallout"
+  },
+  {
+    "name": "ui.slider",
+    "text": "n = mo.ui.slider(start=1, stop=100, step=1, value=10, label=\"{cursor}\")",
+    "keyword": ";moslider"
+  },
+  {
+    "name": "ui.number",
+    "text": "n = mo.ui.number(start=0, stop=100, value=1, label=\"{cursor}\")",
+    "keyword": ";monum"
+  },
+  {
+    "name": "ui.text",
+    "text": "name = mo.ui.text(placeholder=\"{cursor}\", label=\"name\")",
+    "keyword": ";motext"
+  },
+  {
+    "name": "ui.dropdown",
+    "text": "choice = mo.ui.dropdown(options=[\"a\", \"b\"], value=\"a\", label=\"{cursor}\")",
+    "keyword": ";modrop"
+  },
+  {
+    "name": "ui.multiselect",
+    "text": "choices = mo.ui.multiselect(options=[\"a\", \"b\"], label=\"{cursor}\")",
+    "keyword": ";momulti"
+  },
+  {
+    "name": "ui.checkbox",
+    "text": "flag = mo.ui.checkbox(value=False, label=\"{cursor}\")",
+    "keyword": ";mocheck"
+  },
+  {
+    "name": "ui.radio",
+    "text": "mode = mo.ui.radio(options=[\"a\", \"b\"], value=\"a\", label=\"{cursor}\")",
+    "keyword": ";moradio"
+  },
+  {
+    "name": "ui.date",
+    "text": "day = mo.ui.date(label=\"{cursor}\")",
+    "keyword": ";modate"
+  },
+  {
+    "name": "ui.file upload",
+    "text": "upload = mo.ui.file(filetypes=[\".csv\"], kind=\"area\", label=\"{cursor}\")",
+    "keyword": ";mofile"
+  },
+  {
+    "name": "ui.table",
+    "text": "tbl = mo.ui.table({cursor}, selection=\"multi\", page_size=25)",
+    "keyword": ";motable"
+  },
+  {
+    "name": "ui.dataframe explorer",
+    "text": "explorer = mo.ui.dataframe({cursor})",
+    "keyword": ";modf"
+  },
+  {
+    "name": "run button + stop guard",
+    "text": "run = mo.ui.run_button(label=\"Run\")\nrun\n\n# downstream cell:\nmo.stop(not run.value, mo.md(\"Click **Run** to continue.\"))\n{cursor}",
+    "keyword": ";morun"
+  },
+  {
+    "name": "form (defer reactivity)",
+    "text": "form = {cursor}.form(label=\"Submit\")",
+    "keyword": ";moform"
+  },
+  {
+    "name": "stop",
+    "text": "mo.stop({cursor}, mo.md(\"Waiting for input.\"))",
+    "keyword": ";mostop"
+  },
+  {
+    "name": "state",
+    "text": "get_count, set_count = mo.state({cursor})",
+    "keyword": ";mostate"
+  },
+  {
+    "name": "sql cell",
+    "text": "result = mo.sql(\n    f\"\"\"\n    SELECT *\n    FROM {cursor}\n    \"\"\"\n)",
+    "keyword": ";mosql"
+  },
+  {
+    "name": "progress bar",
+    "text": "for item in mo.status.progress_bar(items, title=\"Working\"):\n    {cursor}",
+    "keyword": ";moprogress"
+  },
+  {
+    "name": "spinner",
+    "text": "with mo.status.spinner(title=\"Loading...\"):\n    {cursor}",
+    "keyword": ";mospinner"
+  },
+  {
+    "name": "altair chart",
+    "text": "chart = mo.ui.altair_chart({cursor})",
+    "keyword": ";moalt"
+  },
+  {
+    "name": "interactive matplotlib",
+    "text": "mo.mpl.interactive({cursor})",
+    "keyword": ";mompl"
+  },
+  {
+    "name": "download button",
+    "text": "mo.download(data={cursor}, filename=\"out.csv\", label=\"Download\")",
+    "keyword": ";modl"
+  },
+  {
+    "name": "notebook-relative path",
+    "text": "mo.notebook_dir() / \"{cursor}\"",
+    "keyword": ";monbdir"
+  },
+  {
+    "name": "cli args",
+    "text": "args = mo.cli_args()",
+    "keyword": ";mocli"
+  },
+  {
+    "name": "edit in uv sandbox",
+    "text": "uv run --with marimo marimo edit {cursor} --sandbox",
+    "keyword": ";moedit"
+  },
+  {
+    "name": "run as app",
+    "text": "marimo run {cursor}",
+    "keyword": ";morunapp"
+  },
+  {
+    "name": "convert from jupyter",
+    "text": "marimo convert {cursor}.ipynb > nb.py",
+    "keyword": ";moconvert"
+  },
+  {
+    "name": "export wasm site",
+    "text": "marimo export html-wasm {cursor} -o site/",
+    "keyword": ";moexport"
+  }
+]

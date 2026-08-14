@@ -1,0 +1,142 @@
+[
+  {
+    "name": "binary crate Cargo.toml",
+    "text": "[package]\nname = \"{cursor}\"\nversion = \"0.1.0\"\nedition = \"2024\"\ndescription = \"\"\nlicense = \"MIT OR Apache-2.0\"\n\n[dependencies]\nanyhow = \"1\"",
+    "keyword": ";cgbin"
+  },
+  {
+    "name": "library crate Cargo.toml",
+    "text": "[package]\nname = \"{cursor}\"\nversion = \"0.1.0\"\nedition = \"2024\"\ndescription = \"\"\nlicense = \"MIT OR Apache-2.0\"\nrepository = \"\"\n\n[lib]\nname = \"{cursor}\"\npath = \"src/lib.rs\"\n\n[dependencies]\nthiserror = \"2\"\n\n[dev-dependencies]\npretty_assertions = \"1\"",
+    "keyword": ";cglib"
+  },
+  {
+    "name": "workspace root Cargo.toml",
+    "text": "[workspace]\nresolver = \"2\"\nmembers = [\"crates/*\"]\ndefault-members = [\"crates/{cursor}\"]\n\n[workspace.package]\nversion = \"0.1.0\"\nedition = \"2024\"\nauthors = [\"{cursor}\"]\nlicense = \"MIT OR Apache-2.0\"\nrepository = \"\"\n\n[workspace.dependencies]\nanyhow = \"1\"\nthiserror = \"2\"\nserde = { version = \"1\", features = [\"derive\"] }\nserde_json = \"1\"\ntokio = { version = \"1\", features = [\"full\"] }\ntracing = \"0.1\"\ntracing-subscriber = { version = \"0.3\", features = [\"env-filter\"] }\n\n[workspace.lints.rust]\nunsafe_code = \"forbid\"\n\n[workspace.lints.clippy]\npedantic = { level = \"warn\", priority = -1 }\nnursery = { level = \"warn\", priority = -1 }\n\n[profile.release]\nlto = \"thin\"\ncodegen-units = 1\nstrip = true",
+    "keyword": ";cgws"
+  },
+  {
+    "name": "workspace member Cargo.toml",
+    "text": "[package]\nname = \"{cursor}\"\nversion.workspace = true\nedition.workspace = true\nauthors.workspace = true\nlicense.workspace = true\nrepository.workspace = true\n\n[dependencies]\nanyhow.workspace = true\nthiserror.workspace = true\nserde.workspace = true\n\n[lints]\nworkspace = true",
+    "keyword": ";cgmember"
+  },
+  {
+    "name": "[package] block",
+    "text": "[package]\nname = \"{cursor}\"\nversion = \"0.1.0\"\nedition = \"2024\"\ndescription = \"\"\nlicense = \"MIT OR Apache-2.0\"\nrepository = \"\"\nreadme = \"README.md\"\nkeywords = []\ncategories = []",
+    "keyword": ";cgpkg"
+  },
+  {
+    "name": "[dependencies] starter",
+    "text": "[dependencies]\nanyhow = \"1\"\nthiserror = \"2\"\nserde = { version = \"1\", features = [\"derive\"] }\nserde_json = \"1\"\ntracing = \"0.1\"\n{cursor}",
+    "keyword": ";cgdeps"
+  },
+  {
+    "name": "[dev-dependencies]",
+    "text": "[dev-dependencies]\npretty_assertions = \"1\"\nproptest = \"1\"\ntempfile = \"3\"\n{cursor}",
+    "keyword": ";cgdev"
+  },
+  {
+    "name": "[build-dependencies]",
+    "text": "[build-dependencies]\n{cursor}",
+    "keyword": ";cgbuild"
+  },
+  {
+    "name": "[features]",
+    "text": "[features]\ndefault = [\"{cursor}\"]\n{cursor} = []",
+    "keyword": ";cgfeat"
+  },
+  {
+    "name": "additional [[bin]] entry",
+    "text": "[[bin]]\nname = \"{cursor}\"\npath = \"src/bin/{cursor}.rs\"",
+    "keyword": ";cgbin2"
+  },
+  {
+    "name": "[lib] section",
+    "text": "[lib]\nname = \"{cursor}\"\npath = \"src/lib.rs\"\ncrate-type = [\"rlib\"]",
+    "keyword": ";cglibsec"
+  },
+  {
+    "name": "[[example]] entry",
+    "text": "[[example]]\nname = \"{cursor}\"\npath = \"examples/{cursor}.rs\"",
+    "keyword": ";cgex"
+  },
+  {
+    "name": "[[bench]] entry",
+    "text": "[[bench]]\nname = \"{cursor}\"\nharness = false",
+    "keyword": ";cgbench"
+  },
+  {
+    "name": "[[test]] integration entry",
+    "text": "[[test]]\nname = \"{cursor}\"\npath = \"tests/{cursor}.rs\"",
+    "keyword": ";cgtest"
+  },
+  {
+    "name": "[profile.release] optimized",
+    "text": "[profile.release]\nlto = \"thin\"\ncodegen-units = 1\nstrip = true\npanic = \"abort\"",
+    "keyword": ";cgprofrel"
+  },
+  {
+    "name": "[profile.dev] fast compile",
+    "text": "[profile.dev]\nopt-level = 0\ndebug = \"line-tables-only\"\nincremental = true",
+    "keyword": ";cgprofdev"
+  },
+  {
+    "name": "[patch.crates-io]",
+    "text": "[patch.crates-io]\n{cursor} = { git = \"https://github.com/\", branch = \"main\" }",
+    "keyword": ";cgpatch"
+  },
+  {
+    "name": "[workspace.dependencies]",
+    "text": "[workspace.dependencies]\nanyhow = \"1\"\nthiserror = \"2\"\nserde = { version = \"1\", features = [\"derive\"] }\nserde_json = \"1\"\ntokio = { version = \"1\", features = [\"full\"] }\ntracing = \"0.1\"\ntracing-subscriber = { version = \"0.3\", features = [\"env-filter\"] }\n{cursor}",
+    "keyword": ";cgwsdeps"
+  },
+  {
+    "name": "[workspace.package]",
+    "text": "[workspace.package]\nversion = \"0.1.0\"\nedition = \"2024\"\nauthors = [\"{cursor}\"]\nlicense = \"MIT OR Apache-2.0\"\nrepository = \"\"",
+    "keyword": ";cgwspkg"
+  },
+  {
+    "name": "[workspace.lints]",
+    "text": "[workspace.lints.rust]\nunsafe_code = \"forbid\"\nmissing_docs = \"warn\"\n\n[workspace.lints.clippy]\npedantic = { level = \"warn\", priority = -1 }\nnursery = { level = \"warn\", priority = -1 }",
+    "keyword": ";cgwslints"
+  },
+  {
+    "name": "[lints] inherit from workspace",
+    "text": "[lints]\nworkspace = true",
+    "keyword": ";cglints"
+  },
+  {
+    "name": "serde dep",
+    "text": "serde = { version = \"1\", features = [\"derive\"] }\nserde_json = \"1\"",
+    "keyword": ";cgserde"
+  },
+  {
+    "name": "tokio dep",
+    "text": "tokio = { version = \"1\", features = [\"full\"] }",
+    "keyword": ";cgtokio"
+  },
+  {
+    "name": "tracing deps",
+    "text": "tracing = \"0.1\"\ntracing-subscriber = { version = \"0.3\", features = [\"env-filter\"] }",
+    "keyword": ";cgtracing"
+  },
+  {
+    "name": "path dep (workspace member)",
+    "text": "{cursor} = { path = \"../{cursor}\" }",
+    "keyword": ";cgpath"
+  },
+  {
+    "name": "git dep",
+    "text": "{cursor} = { git = \"https://github.com/\", branch = \"main\" }",
+    "keyword": ";cggit"
+  },
+  {
+    "name": "optional dep behind feature",
+    "text": "[dependencies]\n{cursor} = { version = \"1\", optional = true }\n\n[features]\n{cursor} = [\"dep:{cursor}\"]",
+    "keyword": ";cgopt"
+  },
+  {
+    "name": "dep inherited from workspace",
+    "text": "{cursor}.workspace = true",
+    "keyword": ";cginherit"
+  }
+]
