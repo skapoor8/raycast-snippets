@@ -1,0 +1,5 @@
+__pycache__/
+*.pyc
+.mise.local.toml
+.DS_Store
+.obsidian/
