@@ -4,7 +4,7 @@ tags: [snippets, rust]
 
 # rust
 
-<!-- generated from rust.json by snippets2md.py — edit the JSON, not this file -->
+<!-- this file is the source of truth — md2snippets.py generates rust.json from it; edit this .md, not the JSON -->
 
 43 snippets. Import via Raycast → Settings → Snippets → Import → `rust.json`.
 
@@ -633,7 +633,7 @@ let {cursor} = std::fs::read_to_string(path)?;
 /// ```
 /// # use my_crate::*;
 /// let {cursor} = build();
-/// assert!({cursor}.is_valid());
+/// assert!(result.is_valid());
 /// ```
 ```
 

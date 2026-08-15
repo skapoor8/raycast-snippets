@@ -96,9 +96,12 @@ def parse(md_text: str) -> list[dict]:
 
 
 def convert_file(md_path: Path, out_dir: Path) -> Path:
-    snippets = parse(md_path.read_text())
+    snippets = parse(md_path.read_text(encoding="utf-8"))
     out_path = out_dir / (md_path.stem + ".json")
-    out_path.write_text(json.dumps(snippets, indent=2, ensure_ascii=False) + "\n")
+    out_path.write_text(
+        json.dumps(snippets, indent=2, ensure_ascii=False) + "\n",
+        encoding="utf-8",
+    )
     return out_path
 
 
@@ -132,7 +135,7 @@ def main() -> int:
             print(f"{md.name}: {e}", file=sys.stderr)
             failed += 1
             continue
-        with out.open() as f:
+        with out.open(encoding="utf-8") as f:
             count = len(json.load(f))
         print(f"{md.name} -> {out}  ({count} snippets)")
 

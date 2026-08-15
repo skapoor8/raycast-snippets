@@ -201,7 +201,7 @@
   },
   {
     "name": "doc example (doctest)",
-    "text": "/// # Examples\n///\n/// ```\n/// # use my_crate::*;\n/// let {cursor} = build();\n/// assert!({cursor}.is_valid());\n/// ```",
+    "text": "/// # Examples\n///\n/// ```\n/// # use my_crate::*;\n/// let {cursor} = build();\n/// assert!(result.is_valid());\n/// ```",
     "keyword": ";rsdocex"
   },
   {

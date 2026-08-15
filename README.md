@@ -22,8 +22,10 @@ in Raycast's import format.
 | Pack       | Snippets | Prefix    |
 | ---------- | -------: | --------- |
 | `bash.md`  |       34 | `;sh…`    |
+| `cargo.md` |       28 | `;cg…`    |
 | `marimo.md`|       37 | `;mo…`    |
 | `mise.md`  |       30 | `;mise…`  |
+| `rust.md`  |       43 | `;rs…`    |
 
 ## Installation
 
