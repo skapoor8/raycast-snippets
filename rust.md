@@ -4,9 +4,9 @@ tags: [snippets, rust]
 
 # rust
 
-<!-- generated from rust.json by snippets2md.py — edit the JSON, not this file -->
+<!-- this file is the source of truth — md2snippets.py generates rust.json from it; edit this .md, not the JSON -->
 
-35 snippets. Import via Raycast → Settings → Snippets → Import → `rust.json`.
+43 snippets. Import via Raycast → Settings → Snippets → Import → `rust.json`.
 
 | keyword | snippet |
 | --- | --- |
@@ -44,7 +44,15 @@ tags: [snippets, rust]
 | `;rstokio` | [[#tokio main]] |
 | `;rsspawn` | [[#tokio spawn + join]] |
 | `;rsclap` | [[#clap derive CLI]] |
+| `;rsclapsub` | [[#clap subcommands]] |
 | `;rsread` | [[#read file to string]] |
+| `;rsdoccrate` | [[#crate doc comment]] |
+| `;rsdocmod` | [[#module doc comment]] |
+| `;rsdocfn` | [[#function doc comment]] |
+| `;rsdocfull` | [[#doc comment with sections]] |
+| `;rsdocex` | [[#doc example (doctest)]] |
+| `;rsdocstruct` | [[#struct + field doc comments]] |
+| `;rsdocsafety` | [[#safety doc comment]] |
 
 ## main returning Result
 
@@ -486,10 +494,177 @@ fn main() -> anyhow::Result<()> {
 }
 ```
 
+## clap subcommands
+
+`;rsclapsub`
+
+```rust
+use clap::{Parser, Subcommand};
+
+#[derive(Debug, Parser)]
+#[command(version, about)]
+struct Cli {
+    #[command(subcommand)]
+    command: Command,
+}
+
+#[derive(Debug, Subcommand)]
+enum Command {
+    /// Add a new item
+    Add {
+        /// Name of the item
+        name: String,
+    },
+    /// Remove an item
+    Remove {
+        /// Name of the item
+        name: String,
+
+        /// Remove without confirming
+        #[arg(short, long)]
+        force: bool,
+    },
+    /// List all items
+    List,
+}
+
+fn main() -> anyhow::Result<()> {
+    let cli = Cli::parse();
+
+    match cli.command {
+        Command::Add { name } => {
+            {cursor}
+        }
+        Command::Remove { name, force } => {}
+        Command::List => {}
+    }
+
+    Ok(())
+}
+```
+
 ## read file to string
 
 `;rsread`
 
 ```rust
 let {cursor} = std::fs::read_to_string(path)?;
+```
+
+## crate doc comment
+
+`;rsdoccrate`
+
+```rust
+//! # {cursor}
+//!
+//! One-line summary of what this crate does.
+//!
+//! More detail about the crate's purpose, the main entry points,
+//! and how the pieces fit together.
+//!
+//! # Examples
+//!
+//! ```
+//! use my_crate::run;
+//!
+//! run();
+//! ```
+```
+
+## module doc comment
+
+`;rsdocmod`
+
+```rust
+//! {cursor}
+//!
+//! Longer explanation of what this module provides and when to
+//! reach for it.
+```
+
+## function doc comment
+
+`;rsdocfn`
+
+```rust
+/// {cursor}
+///
+/// # Examples
+///
+/// ```
+/// let result = add(2, 2);
+/// assert_eq!(result, 4);
+/// ```
+```
+
+## doc comment with sections
+
+`;rsdocfull`
+
+```rust
+/// {cursor}
+///
+/// # Errors
+///
+/// Returns [`Err`] if the input cannot be parsed.
+///
+/// # Panics
+///
+/// Panics if the internal invariant is violated.
+///
+/// # Examples
+///
+/// ```
+/// # use my_crate::parse;
+/// let value = parse("42")?;
+/// assert_eq!(value, 42);
+/// # Ok::<(), std::num::ParseIntError>(())
+/// ```
+```
+
+## doc example (doctest)
+
+`;rsdocex`
+
+```rust
+/// # Examples
+///
+/// ```
+/// # use my_crate::*;
+/// let {cursor} = build();
+/// assert!(result.is_valid());
+/// ```
+```
+
+## struct + field doc comments
+
+`;rsdocstruct`
+
+```rust
+/// {cursor}
+///
+/// Describe the invariants callers can rely on.
+pub struct Config {
+    /// Human-readable name.
+    pub name: String,
+    /// Maximum number of retries before giving up.
+    pub retries: usize,
+}
+```
+
+## safety doc comment
+
+`;rsdocsafety`
+
+```rust
+/// {cursor}
+///
+/// # Safety
+///
+/// The caller must ensure that `ptr` is non-null, properly aligned,
+/// and valid for reads of `len` elements.
+pub unsafe fn from_raw(ptr: *const u8, len: usize) {
+    
+}
 ```

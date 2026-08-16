@@ -170,8 +170,48 @@
     "keyword": ";rsclap"
   },
   {
+    "name": "clap subcommands",
+    "text": "use clap::{Parser, Subcommand};\n\n#[derive(Debug, Parser)]\n#[command(version, about)]\nstruct Cli {\n    #[command(subcommand)]\n    command: Command,\n}\n\n#[derive(Debug, Subcommand)]\nenum Command {\n    /// Add a new item\n    Add {\n        /// Name of the item\n        name: String,\n    },\n    /// Remove an item\n    Remove {\n        /// Name of the item\n        name: String,\n\n        /// Remove without confirming\n        #[arg(short, long)]\n        force: bool,\n    },\n    /// List all items\n    List,\n}\n\nfn main() -> anyhow::Result<()> {\n    let cli = Cli::parse();\n\n    match cli.command {\n        Command::Add { name } => {\n            {cursor}\n        }\n        Command::Remove { name, force } => {}\n        Command::List => {}\n    }\n\n    Ok(())\n}",
+    "keyword": ";rsclapsub"
+  },
+  {
     "name": "read file to string",
     "text": "let {cursor} = std::fs::read_to_string(path)?;",
     "keyword": ";rsread"
+  },
+  {
+    "name": "crate doc comment",
+    "text": "//! # {cursor}\n//!\n//! One-line summary of what this crate does.\n//!\n//! More detail about the crate's purpose, the main entry points,\n//! and how the pieces fit together.\n//!\n//! # Examples\n//!\n//! ```\n//! use my_crate::run;\n//!\n//! run();\n//! ```",
+    "keyword": ";rsdoccrate"
+  },
+  {
+    "name": "module doc comment",
+    "text": "//! {cursor}\n//!\n//! Longer explanation of what this module provides and when to\n//! reach for it.",
+    "keyword": ";rsdocmod"
+  },
+  {
+    "name": "function doc comment",
+    "text": "/// {cursor}\n///\n/// # Examples\n///\n/// ```\n/// let result = add(2, 2);\n/// assert_eq!(result, 4);\n/// ```",
+    "keyword": ";rsdocfn"
+  },
+  {
+    "name": "doc comment with sections",
+    "text": "/// {cursor}\n///\n/// # Errors\n///\n/// Returns [`Err`] if the input cannot be parsed.\n///\n/// # Panics\n///\n/// Panics if the internal invariant is violated.\n///\n/// # Examples\n///\n/// ```\n/// # use my_crate::parse;\n/// let value = parse(\"42\")?;\n/// assert_eq!(value, 42);\n/// # Ok::<(), std::num::ParseIntError>(())\n/// ```",
+    "keyword": ";rsdocfull"
+  },
+  {
+    "name": "doc example (doctest)",
+    "text": "/// # Examples\n///\n/// ```\n/// # use my_crate::*;\n/// let {cursor} = build();\n/// assert!(result.is_valid());\n/// ```",
+    "keyword": ";rsdocex"
+  },
+  {
+    "name": "struct + field doc comments",
+    "text": "/// {cursor}\n///\n/// Describe the invariants callers can rely on.\npub struct Config {\n    /// Human-readable name.\n    pub name: String,\n    /// Maximum number of retries before giving up.\n    pub retries: usize,\n}",
+    "keyword": ";rsdocstruct"
+  },
+  {
+    "name": "safety doc comment",
+    "text": "/// {cursor}\n///\n/// # Safety\n///\n/// The caller must ensure that `ptr` is non-null, properly aligned,\n/// and valid for reads of `len` elements.\npub unsafe fn from_raw(ptr: *const u8, len: usize) {\n    \n}",
+    "keyword": ";rsdocsafety"
   }
 ]
